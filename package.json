@@ -1,7 +1,7 @@
 {
   "name": "goit-node-rest-api",
   "type": "module",
-  "engine": {
+  "engines": {
     "node": "22.10.0"
   },
   "scripts": {
