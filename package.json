@@ -2,7 +2,7 @@
   "name": "goit-node-rest-api",
   "type": "module",
   "engine": {
-    "node": "20.12.2"
+    "node": "16.18"
   },
   "scripts": {
     "start": "node ./server.js",
