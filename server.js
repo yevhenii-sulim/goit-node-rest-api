@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 import app from "./app.js";
-const { HOST } = process.env;
+const { HOST, PORT = 3000 } = process.env;
 
 mongoose
   .connect(HOST)
   .then(() =>
-    app.listen(3000, () => {
-      console.log("Server is running. Use our API on port: 3000");
+    app.listen(PORT, () => {
+      console.log(`Server is running. Use our API on port: ${PORT}`);
     })
   )
   .catch(() => {
