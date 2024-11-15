@@ -2,12 +2,12 @@ import ctrlWrapper from "../helpers/ctrlWrapper.js";
 import HttpError from "../helpers/HttpError.js";
 import SchemeContacts from "../schemas/SchemaContacts.js";
 
-const getAllContacts = async (req, res) => {
+const getAllContacts = async (_, res) => {
   const contacts = await SchemeContacts.Constants.find();
   res.status(200).json(contacts);
 };
 
-const getOneContact = async (req, res, next) => {
+const getOneContact = async (req, res) => {
   const { id } = req.params;
   const contact = await SchemeContacts.Constants.findById(id);
   if (!contact) {
@@ -16,7 +16,7 @@ const getOneContact = async (req, res, next) => {
   res.status(200).json(contact);
 };
 
-const deleteContact = async (req, res, next) => {
+const deleteContact = async (req, res) => {
   const { id } = req.params;
   const removedContact = await SchemeContacts.Constants.findByIdAndDelete(id);
   if (!removedContact) {
@@ -25,13 +25,13 @@ const deleteContact = async (req, res, next) => {
   res.json(removedContact);
 };
 
-const createContact = async (req, res, next) => {
+const createContact = async (req, res) => {
   const data = req.body;
   const addedData = await SchemeContacts.Constants(data);
   res.status(201).json(addedData);
 };
 
-const updateContact = async (req, res, next) => {
+const updateContact = async (req, res) => {
   const { id } = req.params;
   const data = req.body;
   const updatedContact = await SchemeContacts.Constants.findByIdAndUpdate(
@@ -45,7 +45,7 @@ const updateContact = async (req, res, next) => {
   res.status(200).json(updatedContact);
 };
 
-const updateStatusContact = async (req, res, next) => {
+const updateStatusContact = async (req, res) => {
   const { id } = req.params;
   const data = req.body;
   const updatedContact = await SchemeContacts.Constants.findByIdAndUpdate(
