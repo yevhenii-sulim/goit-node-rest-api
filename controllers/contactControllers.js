@@ -32,37 +32,31 @@ const createContact = async (req, res, next) => {
 };
 
 const updateContact = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const data = req.body;
-    const updatedContact = await SchemeContacts.Constants.findByIdAndUpdate(
-      id,
-      data,
-      { new: true, runValidators: true }
-    );
-
-    res.status(201).json(updatedContact);
-  } catch (error) {
-    next(error);
+  const { id } = req.params;
+  const data = req.body;
+  const updatedContact = await SchemeContacts.Constants.findByIdAndUpdate(
+    id,
+    data,
+    { new: true, runValidators: true }
+  );
+  if (!updatedContact) {
+    throw HttpError(404, "not found");
   }
+  res.status(200).json(updatedContact);
 };
 
 const updateStatusContact = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const data = req.body;
-    const updatedContact = await SchemeContacts.Constants.findByIdAndUpdate(
-      id,
-      data,
-      { new: true, runValidators: true }
-    );
-    if (!updatedContact) {
-      throw HttpError(404, "not found");
-    }
-    res.status(201).json(updatedContact);
-  } catch (error) {
-    next(error);
+  const { id } = req.params;
+  const data = req.body;
+  const updatedContact = await SchemeContacts.Constants.findByIdAndUpdate(
+    id,
+    data,
+    { new: true, runValidators: true }
+  );
+  if (!updatedContact) {
+    throw HttpError(404, "not found");
   }
+  res.status(200).json(updatedContact);
 };
 
 export default {
