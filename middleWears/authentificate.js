@@ -6,7 +6,6 @@ const { JWT_SICRET } = process.env;
 
 const authentificate = async (req, res, next) => {
 	const { authorization } = req.headers;
-	console.log(req.headers);
 	if (!authorization) {
 		throw HttpError(401, "Not authorized");
 	}
