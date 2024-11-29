@@ -18,8 +18,10 @@ const signup = async (req, res) => {
 		password: hash,
 	});
 	res.status(201).json({
-		email: newUser.email,
-		subscription: newUser.subscription,
+		user: {
+			email: newUser.email,
+			subscription: newUser.subscription,
+		},
 	});
 };
 
@@ -29,7 +31,7 @@ const signin = async (req, res) => {
 	if (!user) {
 		throw HttpError(401, "Email or password is wrong");
 	}
-	const thisPassword = bcrypt.compare(password, user.password);
+	const thisPassword = await bcrypt.compare(password, user.password);
 	if (!thisPassword) {
 		throw HttpError(401, "Email or password is wrong");
 	}
@@ -41,17 +43,19 @@ const signin = async (req, res) => {
 	await usersSchema.Users.findByIdAndUpdate(user._id, { token });
 	res.status(200).json({
 		token,
-		email,
-		subscription: user.subscription,
+		user: {
+			email,
+			subscription: user.subscription,
+		},
 	});
 };
-const signout = async (req, res) => {
+const logout = async (req, res) => {
 	const { _id } = req.user;
 	await usersSchema.Users.findByIdAndUpdate(_id, { token: "" });
 	res.status(204);
 };
 
-const carrent = async (req, res) => {
+const current = async (req, res) => {
 	const { email, subscription } = req.user;
 	res.status(200).json({ email, subscription });
 };
@@ -59,6 +63,6 @@ const carrent = async (req, res) => {
 export default {
 	signup: ctrlWrapper(signup),
 	signin: ctrlWrapper(signin),
-	signout: ctrlWrapper(signout),
-	carrent: ctrlWrapper(carrent),
+	logout: ctrlWrapper(logout),
+	current: ctrlWrapper(current),
 };

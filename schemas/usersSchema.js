@@ -3,12 +3,12 @@ import Joi from "joi";
 import { handleCreate } from "../hooks/hooks.js";
 
 const signinSchema = Joi.object({
-	email: Joi.string(),
-	password: Joi.string(),
+	email: Joi.string().required(),
+	password: Joi.string().required(),
 });
 const signupSchema = Joi.object({
-	email: Joi.string(),
-	password: Joi.string(),
+	email: Joi.string().required(),
+	password: Joi.string().required(),
 });
 
 const usersSchema = new Schema({

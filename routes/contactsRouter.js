@@ -6,22 +6,27 @@ import isValueId from "../middleWears/isValueId.js";
 import authentificate from "../middleWears/authentificate.js";
 const contactsRouter = express.Router();
 
-contactsRouter.use(authentificate);
-
 contactsRouter.get("/", controllers.getAllContacts);
 
 contactsRouter.get("/:id", isValueId, controllers.getOneContact);
 
-contactsRouter.delete("/:id", isValueId, controllers.deleteContact);
+contactsRouter.delete(
+	"/:id",
+	authentificate,
+	isValueId,
+	controllers.deleteContact
+);
 
 contactsRouter.post(
 	"/",
+	authentificate,
 	validateBody(schema.createContactSchema),
 	controllers.createContact
 );
 
 contactsRouter.patch(
 	"/:id/favorite",
+	authentificate,
 	isValueId,
 	validateBody(schema.updateFavorite),
 	controllers.updateStatusContact
@@ -29,6 +34,7 @@ contactsRouter.patch(
 
 contactsRouter.put(
 	"/:id",
+	authentificate,
 	isValueId,
 	validateBody(schema.updateContactSchema),
 	controllers.updateContact

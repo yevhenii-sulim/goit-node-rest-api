@@ -1,14 +1,11 @@
 import { Schema, model } from "mongoose";
 import Joi from "joi";
 
-const validateName = /^[A-Z][a-z]{1,} [A-Z][a-z]{1,}$/;
 const validateMail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
 const validatePone =
 	/^\+380(\d{3}|\(\d{3}\))[-\s]?\d{3}[-\s]?\d{4}$|^\(\d{3}\)\s?\d{3}[-\s]?\d{4}$/;
 const createContactSchema = Joi.object({
-	name: Joi.string()
-		.pattern(validateName)
-		.required("User name number required"),
+	name: Joi.string().required("User name number required"),
 	email: Joi.string()
 		.pattern(validateMail)
 		.required("User email number required"),
@@ -23,7 +20,7 @@ const updateFavorite = Joi.object({
 });
 
 const updateContactSchema = Joi.object({
-	name: Joi.string().pattern(validateName),
+	name: Joi.string(),
 	email: Joi.string().pattern(validateMail),
 	phone: Joi.string().pattern(validatePone),
 	favorite: Joi.boolean(),

@@ -16,7 +16,7 @@ usersRouter.post(
 	validateBody(usersSchema.signupSchema),
 	usersController.signup
 );
-usersRouter.post("/signout", authentificate, usersController.signout);
-usersRouter.get("/carrent", authentificate, usersController.carrent);
+usersRouter.post("/logout", authentificate, usersController.logout);
+usersRouter.get("/current", authentificate, usersController.current);
 
 export default usersRouter;
