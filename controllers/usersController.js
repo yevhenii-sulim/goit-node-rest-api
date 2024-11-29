@@ -52,7 +52,7 @@ const signin = async (req, res) => {
 const logout = async (req, res) => {
 	const { _id } = req.user;
 	await usersSchema.Users.findByIdAndUpdate(_id, { token: "" });
-	res.status(204);
+	res.status(204).json(null);
 };
 
 const current = async (req, res) => {

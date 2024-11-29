@@ -46,6 +46,10 @@ const contactShema = new Schema({
 		ref: "user",
 		required: true,
 	},
+	token: {
+		type: String,
+		required: true,
+	},
 });
 
 contactShema.post("save", (err, _, next) => {

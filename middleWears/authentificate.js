@@ -21,6 +21,7 @@ const authentificate = async (req, res, next) => {
 		if (!user || !user.token || user.token !== token) {
 			throw HttpError(401, "Not authorized");
 		}
+		console.log(user);
 		req.user = user;
 		next();
 	} catch (error) {

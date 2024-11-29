@@ -25,7 +25,11 @@ const getOneContact = async (req, res) => {
 
 const deleteContact = async (req, res) => {
 	const { id } = req.params;
-	const removedContact = await contactsModel.Contacts.findByIdAndDelete(id);
+	const { _id: owner } = req.user;
+	const removedContact = await contactsModel.Contacts.findOneAndDelete({
+		_id: id,
+		owner,
+	});
 	if (!removedContact) {
 		throw HttpError(404, "not found");
 	}
@@ -41,8 +45,9 @@ const createContact = async (req, res) => {
 const updateContact = async (req, res) => {
 	const { id } = req.params;
 	const data = req.body;
-	const updatedContact = await contactsModel.Contacts.findByIdAndUpdate(
-		id,
+	const { _id: owner } = req.user;
+	const updatedContact = await contactsModel.Contacts.findOneAndUpdate(
+		{ _id: id, owner },
 		data,
 		{ new: true, runValidators: true }
 	);
@@ -54,9 +59,10 @@ const updateContact = async (req, res) => {
 
 const updateStatusContact = async (req, res) => {
 	const { id } = req.params;
+	const { _id: owner } = req.user;
 	const data = req.body;
-	const updatedContact = await contactsModel.Contacts.findByIdAndUpdate(
-		id,
+	const updatedContact = await contactsModel.Contacts.findOneAndUpdate(
+		{ _id: id, owner },
 		data,
 		{ new: true, runValidators: true }
 	);
