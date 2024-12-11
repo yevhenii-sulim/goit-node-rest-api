@@ -11,7 +11,6 @@ const signupSchema = Joi.object({
   password: Joi.string().required(),
 });
 const usersSchema = new Schema({
-  userName: String,
   password: {
     type: String,
     required: [true, "Password is required"],
