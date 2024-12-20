@@ -37,19 +37,20 @@ const signup = async (req, res) => {
 
   const password = await bcrypt.hash(nativePassword, 10);
   const verificationToken = nanoid();
-  await Users.create({
+  const newUser = await Users.create({
     email,
     password,
     avatarURL,
     verificationToken,
   });
+
   const verifyEmail = {
     to: email,
     subject: "Approving email",
     html: `<a href="${URL}/users/verify/${verificationToken}">Approve your email</a>`,
   };
   await sendMail(verifyEmail);
-  res.status(201).json({ email, password: nativePassword });
+  res.status(201).json({ email, subscription: newUser.subscription });
 };
 
 const avatarChange = async (req, res) => {
@@ -159,12 +160,9 @@ const reVerify = async (req, res) => {
     html: `<a href="${URL}/users/verify/${user.verificationToken}">Approve your email</a>`,
   };
   await sendMail(verifyEmail);
-  await Users.findOneAndUpdate(
-    { _id: user._id },
-    { verificationToken: "", verify: true }
-  );
+
   res.status(200).json({
-    email: email,
+    message: "Verification email sent",
   });
 };
 
