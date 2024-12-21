@@ -8,7 +8,7 @@ import { nanoid } from "nanoid";
 import { ctrlWrapper, HttpError, sendMail } from "../helpers/index.js";
 import { Users } from "../schemas/userSchema.js";
 
-const { JWT_SECRET, BASE_URL_LOCAL, BASE_URL } = process.env;
+const { BASE_URL_LOCAL, BASE_URL } = process.env;
 
 const URL = BASE_URL_LOCAL || BASE_URL;
 
@@ -37,19 +37,25 @@ const signup = async (req, res) => {
 
   const password = await bcrypt.hash(nativePassword, 10);
   const verificationToken = nanoid();
-  await Users.create({
-    email,
+  const newUser = await Users.create({
+    ...req.body,
     password,
     avatarURL,
     verificationToken,
   });
+
   const verifyEmail = {
     to: email,
     subject: "Approving email",
     html: `<a href="${URL}/users/verify/${verificationToken}">Approve your email</a>`,
   };
   await sendMail(verifyEmail);
-  res.status(201).json({ email, password: nativePassword });
+  res.status(201).json({
+		user: {
+			email: newUser.email,
+			subscription: newUser.subscription,
+		},
+	});
 };
 
 const avatarChange = async (req, res) => {
@@ -159,12 +165,9 @@ const reVerify = async (req, res) => {
     html: `<a href="${URL}/users/verify/${user.verificationToken}">Approve your email</a>`,
   };
   await sendMail(verifyEmail);
-  await Users.findOneAndUpdate(
-    { _id: user._id },
-    { verificationToken: "", verify: true }
-  );
+
   res.status(200).json({
-    email: email,
+    message: "Verification email sent",
   });
 };
 
